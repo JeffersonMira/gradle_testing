@@ -1,0 +1,74 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+//It is possible to change the layout of folders
+sourceSets{
+	main{
+		java{
+			srcDir 'src/java'
+		}
+
+		respirces {
+			srcDir 'src/resources'
+		}
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-jersey')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-validation')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compileOnly('org.projectlombok:lombok')
+	runtime('org.hsqldb:hsqldb')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+def projectVersion = "2.0"
+
+//add-hoc tasks
+task hello{
+}
+
+hello << {println "this is the first taks that is the hello workd $projectVersion"}
+
+project.task("task1")
+task1.description="this is a simple description"
+task1.doLast{println "this is task 1"}
+
+task1.dependsOn hello
+
+//gradle --daemon build : reuse the same jvm that is already in place, which will save a lot of time.
+//it can also be configured in the gradle.build
+
+//task1.shouldRunAfter hello
+//task1.mustRunAfter hello
+//task1.finalizedBy hello
+
+
+//typed tasks
+
+//#To create a multy project build, it is necessary to create another file called
+// settings.gradle with the list of all the projects in the build
+// Also it is necessary to add top level build.gradle
