@@ -32,8 +32,18 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	//jcenter() -> https
+	//url "http:// .."
+	//mavenLocal()
 }
 
+/**
+ * There are four configuration
+ * 1 compile
+ * 2 runtime
+ * 3 testcompile
+ * 4 testruntime
+ */
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-jersey')
@@ -42,8 +52,20 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compileOnly('org.projectlombok:lombok')
 	runtime('org.hsqldb:hsqldb')
+	//it is not needed on the application itself
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-}
+
+	//If dependency is local:
+	// compile files ('lib/log4j.jar', 'lib/junit.jar')
+
+	//to download from maven repository
+	//compile group: 'log4j', name: 'log4j', version: '1.2.17'
+	//compile 'junit:junit:4.12'
+	}
+
+//Transitive dependencies :  when your dependency depends on others.
+
+//To list the depencencies - gradle -q dependencie |-configuration compile|
 
 def projectVersion = "2.0"
 
@@ -59,6 +81,8 @@ task1.doLast{println "this is task 1"}
 
 task1.dependsOn hello
 
+//typed task
+
 //gradle --daemon build : reuse the same jvm that is already in place, which will save a lot of time.
 //it can also be configured in the gradle.build
 
@@ -67,8 +91,27 @@ task1.dependsOn hello
 //task1.finalizedBy hello
 
 
-//typed tasks
-
 //#To create a multy project build, it is necessary to create another file called
 // settings.gradle with the list of all the projects in the build
 // Also it is necessary to add top level build.gradle
+
+
+
+//FILTERING
+test{
+	filter{
+		includeTestsMatching "com.test"
+		includeTestsMatching "*shouldCreateEntity"
+	}
+}
+
+//to run this filter - gradle test --tests *include TestsMatching
+
+
+//INTEGRATION TESTS?
+//gradle-testsets-plugin
+
+
+
+
+//CI on teamcity.com
